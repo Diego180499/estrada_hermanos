@@ -135,6 +135,7 @@ select * from pago_compra where id_compra = 1;
 
 select * from mysql.user;
 
+select * from mysql.user;
 
 
 
