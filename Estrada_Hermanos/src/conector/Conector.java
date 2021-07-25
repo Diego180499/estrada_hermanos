@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import utils.Utils;
 
@@ -39,7 +41,7 @@ public class Conector {
      */
     public static Integer insertar(String nombreTabla, ArrayList<String> campos, ArrayList<Object> valores) {
         String camposQuery = "";
-
+        // insert into nombre_tabla (campos) values (valores)
         for (int i = 0; i < campos.size(); i++) {
             if (i == 0) {
                 camposQuery = "(" + campos.get(i) + ",";
@@ -63,7 +65,7 @@ public class Conector {
                 valoresQuery += "?)";
             }
         }
-
+// insert into cliente (id,nombre,apellido,telefono,email) values (?,?,?,?,?)
         String insertar = "insert into " + nombreTabla + camposQuery + " values " + valoresQuery;
         System.out.println(insertar);
         try {
@@ -72,6 +74,9 @@ public class Conector {
             for (int i = 0; i < valores.size(); i++) {
                 Object valor = valores.get(i);
                 ps.setObject(i + 1, valor);
+                //ps.setObject(1,id)
+                //ps-setObject(2,nombre)
+                //ps.setObject(5,email)
             }
 
             return ps.executeUpdate();
@@ -231,6 +236,16 @@ public class Conector {
             return ps.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException("Error insertando", ex);
+
+        }
+    }
+
+    public void desconectar() {
+        try {
+            getConnection().close();
+        } catch (SQLException ex) {
+            System.out.println("ERROR AL DESCONECTAR");
+            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
 
         }
     }
